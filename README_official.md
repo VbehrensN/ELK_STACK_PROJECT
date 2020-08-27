@@ -2,9 +2,9 @@
 
 The files in this repository were used to configure the network depicted below.
 
-![](images/Red-Team-Resource-group.png)
+![](Diagrams/Red-Team-Resource-group.png)
 
-These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the playbook file may be used to install only certain pieces of it, such as Filebeat.
+These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the __playbook__ file may be used to install only certain pieces of it, such as Filebeat.
 
   -  https://github.com/VbehrensN/ELK_STACK_PROJECT/blob/master/install-elk.yml
 
@@ -23,15 +23,13 @@ The main purpose of this network is to expose a load-balanced and monitored inst
 
 Load balancing ensures that the application will be highly __available__, in addition to restricting __traffic__ to the network.
 
-- What aspect of security do load balancers protect?
-__Load balancers protect the availability of a service by providing access to more than one server so if a server does down, the other one is available and provides redundancy to the system.__
+- Load balancers protect the availability of a service by providing access to more than one server so if a server does down, the other one is available and provides redundancy to the system.
 
-- What is the advantage of a jump box?_
-The jump box protects the other machines in it's virtual netowrk because it sits infront of the other machines, i.e.it is the only machine that has public internet connection. It controls access to the other machines by allowing connections from specific IP addresses and forwarding to those machines
+- The advantage of jump box is that it protects the other machines in it's virtual netowrk because it sits infront of the other machines, i.e. it is the only machine that has public internet connection. It controls access to the other machines by allowing connections from specific IP addresses and forwarding to those machines
 
 Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the __data__ and system __logs__.
-- _TODO: What does Filebeat watch for? __Filebeat watch for log data (files and location)__
-- _TODO: What does Metricbeat record? ___Metricbeat collects server system metrics such as CPU and memory usage, network__
+- Filebeat watches for log data (files and location).
+- Metricbeat collects server system metrics such as CPU and memory usage, network.
 
 The configuration details of each machine may be found below.
 _Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdown_tables) to add/remove values from the table_.
@@ -51,8 +49,8 @@ Only the __jump box__ machine can accept connections from the Internet. Access t
 - __My public IP address__
 
 Machines within the network can only be accessed by __loadbalancer__.
-- _TODO: Which machine did you allow to access your ELK VM? __The ELK VM can be accessed via my workstation via TCP (port 5601)__
-What was its IP address? __The public IP address of the ELK VM is __dynamic__. 
+- The ELK VM can be accessed via my workstation via TCP (port 5601).
+- The public IP address of the ELK VM is __dynamic__. 
 
 A summary of the access policies in place can be found in the table below.
 
@@ -67,22 +65,24 @@ A summary of the access policies in place can be found in the table below.
 
 Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
 
-__The main advantage of automating configuration with Ansible is that configuration of many machines is possible at once.__
+- The main advantage of automating configuration with Ansible is that many machines can be configuration at once.
 
-The playbook implements the following tasks:
+The playbook ["install-elk"](Ansible/install-elk.yml) implements the following tasks:
  
 
-### install docker.io
-### install python3-pip
-### install docker module
-### increase virtual memory
-### use more memory
-### download and launch docker elk container
+- install docker.io
+- install python3-pip
+- install docker module
+- increase virtual memory
+- use more memory
+- download and launch docker elk container
 
-<br />
-The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
-![](images/docker_ps_output.jpg)
+The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance. 
+
+
+
+![](Diagrams/docker_ps_output.jpg)
 
 
 ### Target Machines & Beats
@@ -101,12 +101,28 @@ In order to use the playbook, you will need to have an Ansible control node alre
 
 SSH into the control node and follow the steps below:
 - Copy the __/etc/ansible/files/filebeat-config.ym__ file to __/etc/filebeat/filebeat.yml__.
-- Update the __hosts__ file to include __elk server, ip address and port, username, password__
-- Run the playbook, and navigate to __ACME-VM__ to check that the installation worked as expected.
+- Update the __configuration__ file to include __elk server ip address and port, username, password__
+- Run the playbook, and navigate to __ELK server GUI__ to check that the installation worked as expected.
 
 _TODO: Answer the following questions to fill in the blanks:_
-- _Which file is the playbook? Where do you copy it?_
-- _Which file do you update to make Ansible run the playbook on a specific machine? How do I specify which machine to install the ELK server on versus which to install Filebeat on?_
-- _Which URL do you navigate to in order to check that the ELK server is running?
+
+- _Which file is the playbook?
+
+The playbook ["filebeat"](Ansible/filebeat-playbook.yml)
+
+The playbook ["metricbeat"](Ansible/metricbeat-playbook.yml)
+
+
+ - Where do you copy it?_
+
+__These playbook files are copied in the jumpbox ansible container at location: /etc/ansible/roles__
+
+- Which file do you update to make Ansible run the playbook on a specific machine? 
+__In the host file located in the jumpbox ansible container: /etc/ansible/hosts file__
+
+- How do I specify which machine to install the ELK server on versus which to install Filebeat on?_
+__In the configuration files located in the jumpbox ansible container: /etc/ansible/files__
+
+- Which URL do you navigate to in order to check that the ELK server is running?  __http://[your.ELK-VM.External.IP]:5601/app/kibana__
 
 _As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._
