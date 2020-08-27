@@ -6,7 +6,8 @@ The files in this repository were used to configure the network depicted below.
 
 These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the __playbook__ file may be used to install only certain pieces of it, such as Filebeat.
 
-  -  https://github.com/VbehrensN/ELK_STACK_PROJECT/blob/master/install-elk.yml
+  -  https://github.com/VbehrensN/ELK_STACK_PROJECT.git
+
 
 This document contains the following details:
 - Description of the Topology
@@ -29,10 +30,10 @@ Load balancing ensures that the application will be highly __available__, in add
 
 Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the __data__ and system __logs__.
 - Filebeat watches for log data (files and location).
-- Metricbeat collects server system metrics such as CPU and memory usage, network.
+- Metricbeat collects server system metrics such as CPU and memory usage, network information.
 
 The configuration details of each machine may be found below.
-_Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdown_tables) to add/remove values from the table_.
+
 
 | Name      | Function   | IP Address | Operating System |
 |-----------|------------|------------|------------------|
@@ -40,6 +41,8 @@ _Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdow
 | Web-1     | web server | 10.0.0.5   | Linux            |
 | Web-2     | web server | 10.0.0.6   | Linus            |
 | ACME-VM   | elk server | 10.1.0.4   | Linux            |
+
+<br />
 
 ### Access Policies
 
@@ -52,6 +55,8 @@ Machines within the network can only be accessed by __loadbalancer__.
 - The ELK VM can be accessed via my workstation via TCP (port 5601).
 - The public IP address of the ELK VM is __dynamic__. 
 
+<br />
+
 A summary of the access policies in place can be found in the table below.
 
 | Name     | Publicly Accessible | Allowed IP Addresses                 |
@@ -61,11 +66,13 @@ A summary of the access policies in place can be found in the table below.
 | Web-2    | Yes                 | Any port 80                          |
 | AMCE-VM  | No                  | My_public_IP_address on TCP port 5601|
 
+<br />
+
 ### Elk Configuration
 
 Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
 
-- The main advantage of automating configuration with Ansible is that many machines can be configuration at once.
+- The main advantage of automating configuration with Ansible is that many machines can be configured at once.
 
 The playbook ["install-elk"](Ansible/install-elk.yml) implements the following tasks:
  
@@ -94,35 +101,39 @@ We have installed the following Beats on these machines:
 - __filebeat__ and __metricbeat__
 
 These Beats allow us to collect the following information from each machine:
-- Filebeat is used for logs events and Metricbeat is used for metrics such as CPU and memory usage, network
+- Filebeat is used for logs events and Metricbeat is used for metrics such as CPU and memory usage, network information.
+
+<br />
 
 ### Using the Playbook
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
 
 SSH into the control node and follow the steps below:
-- Copy the __/etc/ansible/files/filebeat-config.ym__ file to __/etc/filebeat/filebeat.yml__.
-- Update the __configuration__ file to include __elk server ip address and port, username, password__
-- Run the playbook, and navigate to __ELK server GUI__ to check that the installation worked as expected.
+- Copy the __/etc/ansible/files/filebeat-config.yml__ file to __/etc/filebeat/filebeat.yml__.
+- Update the __configuration__ file to include __ELK server ip address and port, username, password__
+- Run the playbook using the following command (ansible-playbook filebeat-playbook.ylm), and navigate to __ELK server GUI__ to check that the installation worked as expected.
 
-_TODO: Answer the following questions to fill in the blanks:_
+<br />
 
-- _Which file is the playbook?
+The filebeat playbook can be found here: ["filebeat"](Ansible/filebeat-playbook.yml)
 
-The playbook ["filebeat"](Ansible/filebeat-playbook.yml)
-
-The playbook ["metricbeat"](Ansible/metricbeat-playbook.yml)
+The metricbeat playbook can be found here: ["metricbeat"](Ansible/metricbeat-playbook.yml)
 
 
- - Where do you copy it?_
 
-__These playbook files are copied in the jumpbox ansible container at location: /etc/ansible/roles__
+
+__These playbook files are copied to the jumpbox ansible container at location: /etc/ansible/roles #__
 
 - Which file do you update to make Ansible run the playbook on a specific machine? 
-__In the host file located in the jumpbox ansible container: /etc/ansible/hosts file__
+__In the playbook file, there is a host item that needs to be updated to reflect which machine is to be configured.__
+
 
 - How do I specify which machine to install the ELK server on versus which to install Filebeat on?_
-__In the configuration files located in the jumpbox ansible container: /etc/ansible/files__
+__The machine IP address along with the GROUP name is specified in the 'hosts' file located in the jumpbox container /etc/ansible directory.__
 
 - Which URL do you navigate to in order to check that the ELK server is running?  __http://[your.ELK-VM.External.IP]:5601/app/kibana__
 
 _As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._
+
+
+
