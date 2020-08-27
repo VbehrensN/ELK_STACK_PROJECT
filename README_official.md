@@ -168,7 +168,7 @@ To update the files in the GIT repository run the following commands in the git 
 Open git bash
 $ cd Desktop
 cd ELK_STACK_PROJECT
-$ git .add
+$ git add .
 $ git commit -m "comment"
 $ git push
 
