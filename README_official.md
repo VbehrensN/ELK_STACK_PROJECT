@@ -163,6 +163,14 @@ __http://[your.ELK-VM.External.IP]:5601/app/kibana__
 
 _As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._
 
+To update the files in the GIT repository run the following commands in the git bash command line:
+
+Open git bash
+$ cd Desktop
+cd ELK_STACK_PROJECT
+$ git .add
+$ git commit -m "comment"
+$ git push
 
 
 
