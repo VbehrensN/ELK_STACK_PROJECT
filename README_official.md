@@ -53,8 +53,7 @@ Only the __jump box__ machine can accept connections from the Internet. Access t
 
 Machines within the network can only be accessed by __loadbalancer__.
 - The ELK VM can be accessed via my workstation via TCP (port 5601).
-- The public IP address of the ELK VM is __dynamic__. 
-
+- The public IP address of the ELK VM is __dynamic__.
 <br />
 
 A summary of the access policies in place can be found in the table below.
@@ -72,7 +71,7 @@ A summary of the access policies in place can be found in the table below.
 
 Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
 
-- The main advantage of automating configuration with Ansible is that many machines can be configured at once.
+- The main advantage of automating configuration with Ansible is that many machines can be configured at once and there is less chance of making mistakes configuring each machine.
 
 The playbook ["install-elk"](Ansible/install-elk.yml) implements the following tasks:
  
@@ -85,7 +84,7 @@ The playbook ["install-elk"](Ansible/install-elk.yml) implements the following t
 - download and launch docker elk container
 
 
-The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance. 
+The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance. Once the playbook is run from jumpbox ansible container, one must log into the ELK VM via ssh and type 'sudo docker ps'.
 
 
 
@@ -101,7 +100,7 @@ We have installed the following Beats on these machines:
 - __filebeat__ and __metricbeat__
 
 These Beats allow us to collect the following information from each machine:
-- Filebeat is used for logs events and Metricbeat is used for metrics such as CPU and memory usage, network information.
+- Filebeat is used for logs events and Metricbeat is used for metrics such as CPU and memory usage, network and disk statistics.
 
 <br />
 
@@ -110,30 +109,60 @@ In order to use the playbook, you will need to have an Ansible control node alre
 
 SSH into the control node and follow the steps below:
 - Copy the __/etc/ansible/files/filebeat-config.yml__ file to __/etc/filebeat/filebeat.yml__.
-- Update the __configuration__ file to include __ELK server ip address and port, username, password__
-- Run the playbook using the following command (ansible-playbook filebeat-playbook.ylm), and navigate to __ELK server GUI__ to check that the installation worked as expected.
+- Update the __configuration file (/etc/ansible/files/filebeat-config.yml)__ to include __ELK server ip address and port, username, password.__
+
+The filebeat configuration file is documented here: ["Filebeat Configuration File"](ConfigurationFiles/filebeat-config.yml)
+
+ The metricbeat configuration file is documented here: ["Metricbeat Configuration File"](ConfigurationFiles/metricbeat.yml)
+
+
+- Run the playbook from jumpbox ansible container (cd to /etc/ansible) and use the following command (ansible-playbook filebeat-playbook.ylm). To check is the installation worked as expected; navigate to __ELK server GUI (http://ELK_PUBLIC_IP_address:5601/app/kibana#/home)__ or type in the ELK VM terminal the following command (curl localhost:5601/app/kibana/).
 
 <br />
 
-The filebeat playbook can be found here: ["filebeat"](Ansible/filebeat-playbook.yml)
 
-The metricbeat playbook can be found here: ["metricbeat"](Ansible/metricbeat-playbook.yml)
+To check if the filebeat logs are being obtained; log into ELK server GUI (http://ELK_PUBLIC_IP_address:5601/app/kibana#/home) then select Add Log Data, System Logs, Check data in the Module Status; result should be "Data successfully received from this module".
+
+To check if the metric logs are being obtained; log into ELK server GUI (http://ELK_PUBLIC_IP_address:5601/app/kibana#/home) then select Add Metric Data, System Metrics, Check data in the Module Stat; result should be "Data successfully received from this module".
+
+<br />
+
+These playbook files are copied to the jumpbox ansible container at location: __/etc/ansible/roles #__
 
 
-
-
-__These playbook files are copied to the jumpbox ansible container at location: /etc/ansible/roles #__
+<br />
 
 - Which file do you update to make Ansible run the playbook on a specific machine? 
-__In the playbook file, there is a host item that needs to be updated to reflect which machine is to be configured.__
 
+__In the playbook files, there is a host item that needs to be updated to reflect which machine is to be configured.__
+
+<br />
+
+The ELK playbook is documented here: ["Ansible Playbook"](Ansible/install-elk.yml)
+
+The Filebeat playbook is document here: ["Filebeat Playbook"](Ansible/filebeat-playbook.yml)
+
+The Metricbeat playbook is document here: ["Metricbeat Playbook"](Ansible/metricbeat-playbook.yml)
+
+<br />
 
 - How do I specify which machine to install the ELK server on versus which to install Filebeat on?_
+
+
 __The machine IP address along with the GROUP name is specified in the 'hosts' file located in the jumpbox container /etc/ansible directory.__
 
-- Which URL do you navigate to in order to check that the ELK server is running?  __http://[your.ELK-VM.External.IP]:5601/app/kibana__
+Ansible hosts file is documented here: ["Ansible Hosts File"](ConfigurationFiles/hosts.txt) 
+
+<br />
+
+- Which URL do you navigate to in order to check that the ELK server is running?  
+
+__http://[your.ELK-VM.External.IP]:5601/app/kibana__
+
+<br />
 
 _As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._
+
 
 
 
